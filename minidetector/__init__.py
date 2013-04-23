@@ -8,6 +8,7 @@ class Middleware(object):
         """ Adds a "mobile" attribute to the request which is True or False
             depending on whether the request should be considered to come from a
             small-screen device such as a phone or a PDA"""
+
         
         if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
             #Then it's running opera mini. 'Nuff said.
@@ -15,7 +16,7 @@ class Middleware(object):
             # http://dev.opera.com/articles/view/opera-mini-request-headers/
             
             request.is_simple_device = True
-            
+            request.mobile=True
             return None
         
         if request.META.has_key("HTTP_ACCEPT"):
@@ -42,35 +43,35 @@ class Middleware(object):
                 request.is_ios_device = True
                 request.is_touch_device = True
                 request.is_wide_device = True
-                
+                request.mobile=True         
                 return None
             
             if 'iphone' in s or 'ipod' in s:
                 request.is_ios_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False
-                
+                request.mobile=True
                 return None
             
             if 'android' in s:
                 request.is_android_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False # TODO add support for andriod tablets
-                
+                request.mobile=True
                 return None
             
             if 'webos' in s:
                 request.is_webos_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False # TODO add support for webOS tablets
-                
+                request.mobile=True
                 return None
             
             if 'windows phone' in s:
                 request.is_windows_phone_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False
-                
+                request.mobile=True
                 return None
             
             for ua in search_strings:
@@ -82,7 +83,7 @@ class Middleware(object):
         request.is_simple_device = False
         request.is_touch_device = False
         request.is_wide_device = True
-        
+        request.mobile=False
         return None
 
 def detect_mobile(view):
