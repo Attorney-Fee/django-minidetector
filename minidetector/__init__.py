@@ -67,7 +67,7 @@ class Middleware(object):
                 request.mobile=True
                 return None
             
-            if 'windows phone' in s:
+            if 'windows phone' in s or 'wp7' in s or 'wp8' in s:
                 request.is_windows_phone_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False
