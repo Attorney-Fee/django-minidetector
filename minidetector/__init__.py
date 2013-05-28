@@ -10,7 +10,7 @@ class Middleware(object):
             small-screen device such as a phone or a PDA"""
 
         
-        if request.META.has_key("HTTP_X_OPERAMINI_FEATURES"):
+        if request.META.has_key("HTTP_X_OPERAMINI_FEATURES") or (hasattr(settings, 'FORCE_OPERA_MINI') and settings.FORCE_OPERA_MINI):
             #Then it's running opera mini. 'Nuff said.
             #Reference from:
             # http://dev.opera.com/articles/view/opera-mini-request-headers/
@@ -36,38 +36,38 @@ class Middleware(object):
             
             s = request.META["HTTP_USER_AGENT"].lower()
             
-            if 'applewebkit' in s:
+            if 'applewebkit' in s or (hasattr(settings, 'FORCE_WEBKIT') and settings.FORCE_WEBKIT):
                 request.is_webkit = True
             
-            if 'ipad' in s:
+            if 'ipad' in s or (hasattr(settings, 'FORCE_IPAD') and settings.FORCE_IPAD):
                 request.is_ios_device = True
                 request.is_touch_device = True
                 request.is_wide_device = True
                 request.mobile=True         
                 return None
             
-            if 'iphone' in s or 'ipod' in s:
+            if 'iphone' in s or 'ipod' in s or (hasattr(settings, 'FORCE_IPHONE') and settings.FORCE_IPHONE):
                 request.is_ios_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False
                 request.mobile=True
                 return None
             
-            if 'android' in s:
+            if 'android' in s or (hasattr(settings, 'FORCE_ANDROID') and settings.FORCE_ANDROID):
                 request.is_android_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False # TODO add support for andriod tablets
                 request.mobile=True
                 return None
             
-            if 'webos' in s:
+            if 'webos' in s or (hasattr(settings, 'FORCE_WEBOS') and settings.FORCE_WEBOS):
                 request.is_webos_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False # TODO add support for webOS tablets
                 request.mobile=True
                 return None
             
-            if 'windows phone' in s or 'wp7' in s or 'wp8' in s:
+            if 'windows phone' in s or 'wp7' in s or 'wp8' in s or (hasattr(settings, 'FORCE_WINDOWS_PHONE') and settings.FORCE_WINDOWS_PHONE):
                 request.is_windows_phone_device = True
                 request.is_touch_device = True
                 request.is_wide_device = False
